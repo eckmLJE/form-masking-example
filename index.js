@@ -46,9 +46,19 @@ function addSubmitListener() {
   getForm().addEventListener("submit", handleSubmit);
 }
 
+function addDateValidateListener() {
+  getDateInput().addEventListener("input", validateDate);
+}
+
+function addTelValidateListener() {
+  getTelInput().addEventListener("input", validateTel);
+}
+
 function addListeners() {
   addCountryListener();
   addSubmitListener();
+  addDateValidateListener();
+  addTelValidateListener();
 }
 
 // Event Handlers
@@ -61,6 +71,33 @@ function handleSelectCountry(e) {
 function handleSubmit(e) {
   e.preventDefault();
   validateForm();
+}
+
+// Event Handlers - Custom onInput Validation
+
+function validateDate() {
+  var inputMonth = parseInt(dateCleave.getRawValue().slice(0, 2));
+  var inputYear = parseInt(dateCleave.getRawValue().slice(2));
+  var today = new Date();
+  today.getFullYear() > inputYear
+    ? getDateInput().setCustomValidity("Expiry must be in the future.")
+    : today.getMonth() + 1 > inputMonth
+    ? getDateInput().setCustomValidity("Expiry must be in the future.")
+    : getDateInput().setCustomValidity("");
+}
+
+function validateTel() {
+  var telInputValue = getTelInput().value.replace(/-/g, "");
+  var processedTel = processTel(telInputValue);
+  processedTel.length === 10
+    ? getTelInput().setCustomValidity("")
+    : getTelInput().setCustomValidity("Please enter valid telephone.");
+}
+
+function processTel(telInputValue) {
+  return telInputValue[0] === "1"
+    ? telInputValue.slice(1, 11)
+    : telInputValue.slice(0, 10);
 }
 
 // Submit Validation
@@ -119,7 +156,7 @@ function formatUS() {
   telCleave.setPhoneRegionCode("US");
 }
 
-function formatCA(zipInput, country) {
+function formatCA() {
   var zipInput = getZipInputCA();
   zipInput.classList.remove("hidden");
   zipInput.disabled = false;
@@ -129,7 +166,7 @@ function formatCA(zipInput, country) {
   telCleave.setPhoneRegionCode("CA");
 }
 
-function formatMX(zipInput, country) {
+function formatMX() {
   var zipInput = getZipInput();
   zipInput.classList.remove("hidden");
   zipInput.disabled = false;
@@ -150,37 +187,6 @@ function resetZip() {
   var zipInput = getZipInput();
   zipInput.classList.remove("hidden");
   zipInput.placeholder = "Postal Code";
-}
-
-// Custom onInput Validation
-
-getDateInput().addEventListener("input", validateDate);
-
-function validateDate() {
-  var inputMonth = parseInt(dateCleave.getRawValue().slice(0, 2));
-  var inputYear = parseInt(dateCleave.getRawValue().slice(2));
-  var today = new Date();
-  today.getFullYear() > inputYear
-    ? getDateInput().setCustomValidity("Expiry must be in the future.")
-    : today.getMonth() + 1 > inputMonth
-    ? getDateInput().setCustomValidity("Expiry must be in the future.")
-    : getDateInput().setCustomValidity("");
-}
-
-getTelInput().addEventListener("input", validateTel);
-
-function validateTel() {
-  var telInputValue = getTelInput().value.replace(/-/g, "");
-  var processedTel = processTel(telInputValue);
-  processedTel.length === 10
-    ? getTelInput().setCustomValidity("")
-    : getTelInput().setCustomValidity("Please enter valid telephone.");
-}
-
-function processTel(telInputValue) {
-  return telInputValue[0] === "1"
-    ? telInputValue.slice(1, 11)
-    : telInputValue.slice(0, 10);
 }
 
 // Cleave
