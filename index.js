@@ -66,8 +66,12 @@ function handleSubmit(e) {
 // Submit Validation
 
 function validateForm() {
-  getForm().classList.add("was-validated");
-  console.log("submission successful");
+  var form = getForm();
+  form.checkValidity() ? fakeFormSubmit() : form.classList.add("was-validated");
+}
+
+function fakeFormSubmit() {
+  console.log("Form is Valid. Submission Successful");
   var success = getSuccess();
   success.textContent = "SUCCESS";
   setTimeout(function() {
