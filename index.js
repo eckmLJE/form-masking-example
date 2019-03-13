@@ -129,24 +129,42 @@ function formatInputs(country) {
       var zipInput = getZipInput();
       zipInput.classList.remove("hidden");
       zipInput.disabled = false;
-      formatUS(zipInput);
+      formatUS(zipInput, country);
       break;
     case "CA":
       var zipInput = getZipInputCA();
       zipInput.classList.remove("hidden");
       zipInput.disabled = false;
-      formatCA(zipInput);
+      formatCA(zipInput, country);
       break;
     case "MX":
       var zipInput = getZipInput();
       zipInput.classList.remove("hidden");
       zipInput.disabled = false;
-      formatMX(zipInput);
+      formatMX(zipInput, country);
       break;
     default:
       console.log("Country not found.");
       break;
   }
+}
+
+function formatUS(zipInput, country) {
+  zipInput.pattern = "[0-9]{5}"; // validation
+  zipInput.maxLength = "5";
+  telCleave.setPhoneRegionCode(country);
+}
+
+function formatCA(zipInput, country) {
+  zipInput.pattern = "[A-Za-z][1-9][A-Za-z][ -][1-9][A-Za-z][1-9]"; // validation
+  zipInput.maxLength = "7";
+  telCleave.setPhoneRegionCode(country);
+}
+
+function formatMX(zipInput, country) {
+  zipInput.pattern = "[0-9]{5}";
+  zipInput.maxLength = "5";
+  telCleave.setPhoneRegionCode(country);
 }
 
 function hideAndDisableZips() {
@@ -156,35 +174,18 @@ function hideAndDisableZips() {
   });
 }
 
-function formatUS(zipInput) {
-  zipInput.pattern = "[0-9]{5}"; // validation
-  zipInput.maxLength = "5";
-  telCleave.setPhoneRegionCode(country);
-}
-
-function formatCA(zipInput) {
-  zipInput.pattern = "[A-Za-z][1-9][A-Za-z][ -][1-9][A-Za-z][1-9]"; // validation
-  zipInput.maxLength = "7";
-  telCleave.setPhoneRegionCode(country);
-}
-
-function formatMX(zipInput) {
-  zipInput.pattern = "[0-9]{5}";
-  zipInput.maxLength = "5";
-  telCleave.setPhoneRegionCode(country);
-}
-
 // Cleave
 
 var zipCleaveCA = new Cleave("#zipCA", {
   blocks: [3, 3],
-  delimeter: "-"
+  delimiter: "-",
+  uppercase: true
 });
 
 var zipCleave = new Cleave("#zip", {
   numeral: true,
   numeralDecimalScale: 0,
-  delimeter: "",
+  delimiter: "",
   numeralPositiveOnly: true,
   stripLeadingZeroes: false
 });
