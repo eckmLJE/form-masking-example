@@ -146,7 +146,6 @@ function hideAndDisableZips() {
   getAllZipInputs().forEach(function(ele) {
     ele.classList.add("hidden");
     ele.disabled = true;
-    ele.placeholder = "Postal Code";
   });
 }
 
