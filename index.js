@@ -26,6 +26,10 @@ function getZipInputCA() {
   return document.querySelector("#zipCA");
 }
 
+function getAllZipInputs() {
+  return document.querySelectorAll(".zip");
+}
+
 function getTelInput() {
   return document.querySelector("#tel");
 }
@@ -68,7 +72,6 @@ function handleSubmit(e) {
 // Submit Validation
 
 function validateForm() {
-  console.log(telCleave.getRawValue());
   getForm().classList.add("was-validated");
   console.log("submission successful");
   var success = getSuccess();
@@ -76,37 +79,6 @@ function validateForm() {
   setTimeout(function() {
     success.textContent = "";
   }, 3000);
-}
-
-// Custom onInput Validation
-
-getDateInput().addEventListener("input", validateDate);
-
-function validateDate() {
-  var inputMonth = parseInt(dateCleave.getRawValue().slice(0, 2));
-  var inputYear = parseInt(dateCleave.getRawValue().slice(2));
-  var today = new Date();
-  today.getFullYear() > inputYear
-    ? getDateInput().setCustomValidity("Expiry must be in the future.")
-    : today.getMonth() + 1 > inputMonth
-    ? getDateInput().setCustomValidity("Expiry must be in the future.")
-    : getDateInput().setCustomValidity("");
-}
-
-getTelInput().addEventListener("input", validateTel);
-
-function validateTel() {
-  var telInputValue = getTelInput().value.replace(/-/g, "");
-  var processedTel = processTel(telInputValue);
-  processedTel.length === 10
-    ? getTelInput().setCustomValidity("")
-    : getTelInput().setCustomValidity("Please enter valid telephone.");
-}
-
-function processTel(telInputValue) {
-  return telInputValue[0] === "1"
-    ? telInputValue.slice(1, 11)
-    : telInputValue.slice(0, 10);
 }
 
 // Form
@@ -117,7 +89,7 @@ function setCountry(country) {
     input.value = "";
     input.disabled = !country;
   });
-  if (country) formatInputs(country);
+  country ? formatInputs(country) : resetZips();
 }
 
 // Inputs & Validation
@@ -152,26 +124,68 @@ function formatInputs(country) {
 function formatUS(zipInput, country) {
   zipInput.pattern = "[0-9]{5}"; // validation
   zipInput.maxLength = "5";
+  zipInput.placeholder = "US ZIP Code";
   telCleave.setPhoneRegionCode(country);
 }
 
 function formatCA(zipInput, country) {
   zipInput.pattern = "[A-Za-z][1-9][A-Za-z][ -][1-9][A-Za-z][1-9]"; // validation
   zipInput.maxLength = "7";
+  zipInput.placeholder = "CA Postal Code";
   telCleave.setPhoneRegionCode(country);
 }
 
 function formatMX(zipInput, country) {
   zipInput.pattern = "[0-9]{5}";
   zipInput.maxLength = "5";
+  zipInput.placeholder = "MX Postal Code";
   telCleave.setPhoneRegionCode(country);
 }
 
 function hideAndDisableZips() {
-  document.querySelectorAll(".zip").forEach(function(ele) {
+  getAllZipInputs().forEach(function(ele) {
     ele.classList.add("hidden");
     ele.disabled = true;
+    ele.placeholder = "Postal Code";
   });
+}
+
+function resetZips() {
+  hideAndDisableZips();
+  var zipInput = getZipInput();
+  zipInput.classList.remove("hidden");
+  zipInput.placeholder = "Postal Code";
+}
+
+// Custom onInput Validation
+
+getDateInput().addEventListener("input", validateDate);
+
+function validateDate() {
+  var inputMonth = parseInt(dateCleave.getRawValue().slice(0, 2));
+  var inputYear = parseInt(dateCleave.getRawValue().slice(2));
+  var today = new Date();
+  today.getFullYear() > inputYear
+    ? getDateInput().setCustomValidity("Expiry must be in the future.")
+    : today.getMonth() + 1 > inputMonth
+    ? getDateInput().setCustomValidity("Expiry must be in the future.")
+    : getDateInput().setCustomValidity("");
+}
+
+getTelInput().addEventListener("input", validateTel);
+
+function validateTel() {
+  var telInputValue = getTelInput().value.replace(/-/g, "");
+  var processedTel = processTel(telInputValue);
+  processedTel.length === 10
+    ? getTelInput().setCustomValidity("")
+    : getTelInput().setCustomValidity("Please enter valid telephone.");
+}
+
+function processTel(telInputValue) {
+  return telInputValue[0] === "1"
+    ? telInputValue.slice(1, 11)
+    : telInputValue.slice(0, 10);
 }
 
 // Cleave
