@@ -89,7 +89,7 @@ function setCountry(country) {
     input.value = "";
     input.disabled = !country;
   });
-  country ? formatInputs(country) : resetZips();
+  formatInputs(country);
 }
 
 // Inputs & Validation
@@ -98,48 +98,48 @@ function formatInputs(country) {
   hideAndDisableZips();
   switch (country) {
     case "US":
-      var zipInput = getZipInput();
-      zipInput.classList.remove("hidden");
-      zipInput.disabled = false;
-      formatUS(zipInput, country);
+      formatUS();
       break;
     case "CA":
-      var zipInput = getZipInputCA();
-      zipInput.classList.remove("hidden");
-      zipInput.disabled = false;
-      formatCA(zipInput, country);
+      formatCA();
       break;
     case "MX":
-      var zipInput = getZipInput();
-      zipInput.classList.remove("hidden");
-      zipInput.disabled = false;
-      formatMX(zipInput, country);
+      formatMX();
       break;
     default:
-      console.log("Country not found.");
+      resetZip();
       break;
   }
 }
 
-function formatUS(zipInput, country) {
+function formatUS() {
+  var zipInput = getZipInput();
+  zipInput.classList.remove("hidden");
+  zipInput.disabled = false;
   zipInput.pattern = "[0-9]{5}"; // validation
   zipInput.maxLength = "5";
   zipInput.placeholder = "US ZIP Code";
-  telCleave.setPhoneRegionCode(country);
+  telCleave.setPhoneRegionCode("US");
 }
 
 function formatCA(zipInput, country) {
+  var zipInput = getZipInputCA();
+  zipInput.classList.remove("hidden");
+  zipInput.disabled = false;
   zipInput.pattern = "[A-Za-z][1-9][A-Za-z][ -][1-9][A-Za-z][1-9]"; // validation
   zipInput.maxLength = "7";
   zipInput.placeholder = "CA Postal Code";
-  telCleave.setPhoneRegionCode(country);
+  telCleave.setPhoneRegionCode("CA");
 }
 
 function formatMX(zipInput, country) {
+  var zipInput = getZipInput();
+  zipInput.classList.remove("hidden");
+  zipInput.disabled = false;
   zipInput.pattern = "[0-9]{5}";
   zipInput.maxLength = "5";
   zipInput.placeholder = "MX Postal Code";
-  telCleave.setPhoneRegionCode(country);
+  telCleave.setPhoneRegionCode("MX");
 }
 
 function hideAndDisableZips() {
@@ -149,8 +149,7 @@ function hideAndDisableZips() {
   });
 }
 
-function resetZips() {
-  hideAndDisableZips();
+function resetZip() {
   var zipInput = getZipInput();
   zipInput.classList.remove("hidden");
   zipInput.placeholder = "Postal Code";
