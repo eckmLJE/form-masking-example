@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Form Masking</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+  </head>
+  <body>
+    <h1>Cleave Inputs: ZIP, Tel, Expiry</h1>
+    <div>
+      <form style="margin-top: 10px;">
+        <select id="country" required>
+          <option value="">Select Country</option>
+          <option value="US">United States</option>
+          <option value="CA">Canada</option>
+          <option value="MX">Mexico</option>
+        </select>
+        <input
+          id="zip"
+          class="zip"
+          type="text"
+          placeholder="US/MX Postal Code"
+          disabled
+          required
+        />
+        <input
+          id="zipCA"
+          class="zip hidden"
+          type="text"
+          placeholder="CA Postal Code"
+          disabled
+          required
+        />
+        <input id="tel" type="tel" placeholder="Telephone" disabled required />
+        <input id="date" type="text" placeholder="MM/YYYY" disabled required />
+        <button type="submit">Submit</button>
+        <span id="success"></span>
+      </form>
+      <h4>Sample Phone Numbers</h4>
+      <ol>
+        <li>US: 202-555-5555</li>
+        <li>CA: 416-555-5555</li>
+        <li>MX: 55-5533-9637</li>
+      </ol>
+    </div>
+    <script src="./packages/cleave.min.js"></script>
+    <script src="./packages/cleave-phone.i18n.js"></script>
+    <script src="./index.js"></script>
+  </body>
+</html>
