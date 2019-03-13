@@ -1,9 +1,3 @@
-// State
-
-var formState = {
-  country: ""
-};
-
 // Selectors
 
 function getForm() {
@@ -84,7 +78,6 @@ function validateForm() {
 // Form
 
 function setCountry(country) {
-  formState.country = country;
   getInputs().forEach(function(input) {
     input.value = "";
     input.disabled = !country;
